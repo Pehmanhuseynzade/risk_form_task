@@ -1,0 +1,121 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    header{
+        width: 100%;
+        padding: 20px;
+        background-color: rgb(247,247,247);
+        border: 1px solid rgb(247,247,247);
+        p{
+            margin-left: 5px;
+            color: black;
+            font-weight: 500;
+            font-family: sans-serif;
+        }
+    }
+
+    form{
+        font-family: sans-serif;
+        .first-name{
+            margin-top: 30px;
+            color: rgba(0, 0, 0, 0.712);
+            label{
+                padding-left: 30px;
+            }
+            .first-name-input{
+                padding-left: 10px;
+                border: 1px solid rgba(128, 128, 128, 0.696);
+                margin-left: 50px;
+                width: 500px;
+                height: 40px;
+                border-radius: 5px;
+            }
+        }
+        .last-name{
+            margin-top: 15px;
+            color: rgba(0, 0, 0, 0.712);
+            label{
+                padding-left: 30px;
+            }
+            .last-name-input{
+                padding-left: 10px;
+                border: 1px solid rgba(128, 128, 128, 0.696);
+                margin-left: 52px;
+                width: 500px;
+                height: 40px;
+                border-radius: 5px;
+            }
+        }
+        .email-inp{
+            margin-top: 15px;
+            color: rgba(0, 0, 0, 0.712);
+            label{
+                padding-left: 30px;
+            }
+            .email{
+                padding-left: 10px;
+                border: 1px solid rgba(128, 128, 128, 0.696);
+                margin-left: 25px;
+                width: 500px;
+                height: 40px;
+                border-radius: 5px;
+            }
+            .confirm-email{
+                padding-left: 10px;
+                border: 1px solid rgba(128, 128, 128, 0.696);
+                margin-left: 28px;
+                width: 500px;
+                height: 40px;
+                border-radius: 5px; 
+            }
+        }
+        .inp{
+            margin-top: 15px;
+            color: rgba(0, 0, 0, 0.712);
+            label{
+                padding-left: 30px;
+            }
+            input{
+                padding-left: 10px;
+                border: 1px solid rgba(128, 128, 128, 0.696);
+                margin-left: 82px;
+                width: 500px;
+                height: 40px;
+                border-radius: 5px;
+            }
+        }
+        .inp-radio{
+            margin-top: 15px;
+            color: rgba(0, 0, 0, 0.712);
+            display: flex;
+            gap: 20px;
+            p{
+            padding-left: 30px; 
+            }
+            input{
+            width: 30px;
+            }
+        }
+        .checkbox{
+            margin-top: 15px;
+            padding-left: 30px;
+            label{
+                padding-left: 10px;
+            }
+        }
+        button{
+            margin: 15px 210px;
+            width: 80px;
+            height: 35px;
+            background-color: rgb(90,170,255);
+            border: none;
+            color: white;
+            transition: .5s;
+            &:hover{
+                cursor: pointer;
+                background-color: rgb(19, 112, 211)
+            }
+        }
+    }
+}
