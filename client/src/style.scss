@@ -76,6 +76,11 @@
             label{
                 padding-left: 30px;
             }
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
             input{
                 padding-left: 10px;
                 border: 1px solid rgba(128, 128, 128, 0.696);

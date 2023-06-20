@@ -115,7 +115,7 @@ import React, { useState } from 'react';
          onBlur={formik.handleBlur}
          value={formik.values.phone}
          className="confirm-email"
-         placeholder='Confirm Email (required)'
+         placeholder='Phone'
        />
        </div>}
        <div className='inp-radio'>
