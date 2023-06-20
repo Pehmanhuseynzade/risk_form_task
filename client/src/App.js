@@ -117,7 +117,7 @@ const App = () => {
         </div>
         {required === "text" &&
           <div className='inp'>
-            <label>Phone :</label>
+            <label>Phone </label>
             <input
               id="phone"
               name="phone"
@@ -141,7 +141,7 @@ const App = () => {
           </div>
         </div>
         <div className='inp'>
-          <label htmlFor="rating">Rating :</label>
+          <label htmlFor="rating">Rating</label>
           <input
             id="rating"
             name="rating"
