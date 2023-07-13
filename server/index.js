@@ -20,10 +20,12 @@ const loginSchema = new mongoose.Schema({
     email: String,
     confirmEmail :String,
     phone :Number,
-    rating :String,
+    rating :Number,
   });
 
 const loginModel = mongoose.model('login', loginSchema);
+
+//POST DATAS
 
 app.post(`/api/form`,async(req,res)=>{
     const{firstName,lastName,email,confirmEmail,phone,rating} = req.body
@@ -42,6 +44,8 @@ app.post(`/api/form`,async(req,res)=>{
     })
 })
 
+//GET DATAS
+
 app.get(`/api/form`,async(req,res)=>{
     const{name}=req.query
     const newGet = await loginModel.find()
@@ -56,11 +60,41 @@ app.get(`/api/form`,async(req,res)=>{
     }
 })
 
+//GET DATAS BY ID
+
+app.get(`/api/form/:id`,async(req,res)=>{
+     const {id} = req.params
+     const formID = await loginModel.findById(id)
+     res.status(200).send(formID) 
+})
+
+//DELETE
+
 app.delete(`/api/form/:id`,async(req,res)=>{
     const id=req.params.id
     const newDelete = await loginModel.findByIdAndDelete(id)
     res.status(202).send(newDelete)
 })
+
+//UPDATE
+
+app.put(`/api/form/:id`,async(req,res)=>{
+     const id = req.params.id
+     const{firstName,lastName,email,confirmEmail,phone,rating} = req.body
+     const Updatedatas = {
+          firstName:firstName,
+          lastName:lastName,
+          email:email,
+          confirmEmail:confirmEmail,
+          phone:phone,
+          rating:rating
+     }
+     await loginModel.findByIdAndUpdate(id,Updatedatas)
+     res.status(200).send({
+          message:`Update is succesfully!`
+      })
+     
+     })
 
 
 PORT = process.env.PORT
