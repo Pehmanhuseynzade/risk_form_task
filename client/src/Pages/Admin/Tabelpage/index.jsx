@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { getAlldatas, getdatasbyID, deleteDatas, postDatas } from '../../../api/httpsrequests';
+import { getAlldatas, deleteDatas, postDatas } from '../../../api/httpsrequests';
 import { Table, Button, Modal, Form, Input } from 'antd';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import "./table.scss"
 // import { Helmet } from "react-helmet";
 
 function Tablepage() {
@@ -49,7 +52,6 @@ function Tablepage() {
         <input id="edit-confirmEmail" type="text" placeholder="Confirm Email" value="${record.confirmEmail}" class="swal2-input" />
         <input id="edit-phone" type="number" placeholder="Phone" value="${record.phone}" class="swal2-input" />
         <input id="edit-rating" type="number" placeholder="Rating" value="${record.rating}" class="swal2-input" />
-
       `,
       showCancelButton: true,
       confirmButtonText: "Save",
@@ -60,12 +62,25 @@ function Tablepage() {
         const editedconfirmEmail = Swal.getPopup().querySelector("#edit-confirmEmail").value;
         const editedphone = Swal.getPopup().querySelector("#edit-phone").value;
         const editedrating = Swal.getPopup().querySelector("#edit-rating").value;
-
-
+  
         if (!editedfirstName || !editedlastName || !editedemail || !editedconfirmEmail || !editedphone || !editedrating) {
           Swal.showValidationMessage("Please fill in all fields");
           return false;
         }
+  
+        // Check if email and confirmEmail match
+        if (editedemail !== editedconfirmEmail) {
+          Swal.showValidationMessage("Email and confirmEmail do not match");
+          return false;
+        }
+  
+        // Check for existing email entry
+        const existingEntry = info.find((entry) => entry.email === editedemail);
+        if (existingEntry) {
+          Swal.showValidationMessage("Email already exists");
+          return false;
+        }
+  
         return {
           firstName: editedfirstName,
           lastName: editedlastName,
@@ -79,12 +94,11 @@ function Tablepage() {
       if (result.isConfirmed) {
         const editedData = result.value;
         console.log("Edited Data:", editedData);
-
+  
         try {
           await axios.put(`http://localhost:8989/api/form/${record._id}`, editedData);
         } catch (error) {
           console.error(error);
-          // Handle the error here
         }
       }
     });
@@ -121,6 +135,21 @@ function Tablepage() {
   const handleSubmit = async () => {
     const values = await form.validateFields();
 
+    if (values.email !== values.confirmEmail) {
+      toast.error("Email and confirmEmail do not match", {
+        autoClose: 2000,
+      });
+      return;
+    }
+
+    const existingEntry = info.find((entry) => entry.email === values.email);
+    if (existingEntry) {
+      toast.error("Email already exists", {
+        autoClose: 2000,
+      });
+      return;
+    }
+
 
     const newInfo = {
       firstName: values.firstName,
@@ -130,11 +159,13 @@ function Tablepage() {
       phone: values.phone,
       rating: values.rating,
     };
-
+    toast.success('Post is successfully!',{
+      autoClose : 2000
+    });
     await postDatas(newInfo);
 
     handleCloseModal();
-    // }
+   
     await userinfos();
 
   };
@@ -177,15 +208,9 @@ function Tablepage() {
       render: (text, record) => (
         <Link to={`details/${record._id}`}>
           <button
-            style={{
-              background: "#1677ff",
-              color: "white",
-              width: 80,
-              height: 40,
-              fontFamily: "chillax-regular",
-            }}
+          className='det-btn'
           >
-            Detail Page
+            <i class="fa-solid fa-address-book"></i>
           </button>
         </Link>
       ),
@@ -196,18 +221,12 @@ function Tablepage() {
       key: "edit",
       render: (text, record) => (
         <Button
-          style={{
-            background: "#1677ff",
-            color: "white",
-            width: 80,
-            height: 40,
-            fontFamily: "chillax-regular",
-          }}
+        type="primary"
           onClick={() => {
             handleEditData(record)
           }}
         >
-          Edit
+          <i class="fa-solid fa-pencil"></i>
         </Button>
       ),
     },
@@ -216,7 +235,7 @@ function Tablepage() {
       key: 'delete',
       render: (_, record) => (
         <Button type="primary" danger onClick={() => handleDeleteinfo(record._id)}>
-          Delete
+          <i class="fa-solid fa-xmark"></i>
         </Button>
       ),
     },
@@ -224,13 +243,15 @@ function Tablepage() {
 
   return (
     <>
-      <div style={{ marginLeft: '220px' }}>
-        <div style={{ marginBottom: '16px' }}>
-          <button type="primary" onClick={() => handleOpenModal(null)} style={{ marginLeft: '550px', marginTop: '60px' }}>
+      <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+        <div>
+        <div className='go-add' style={{ marginBottom: '16px',marginTop:"40px" }}>
+            <Link to='/'><button className='go-back'>Go back</button></Link>
+          <button className='add' onClick={() => handleOpenModal(null)}>
             Add
           </button>
         </div>
-        <div style={{ width: '60%', margin: '30px auto' }}>
+        <div style={{ width: '60%', }}>
           <Table columns={columns} dataSource={info} />
 
           <Modal
@@ -286,6 +307,8 @@ function Tablepage() {
           </Modal>
         </div>
       </div>
+      </div>
+      <ToastContainer/>
     </>
   )
 }

@@ -25,10 +25,13 @@ const Mainuser = () => {
         .required('Required'),
       email: Yup.string().email('Invalid email address').required('Required'),
       confirmEmail: Yup.string().email('Invalid email address').required('Required'),
-    }),
+    rating: Yup.number()
+        .typeError("Rating must be a number")
+        .required("Required"),
+          }),
     onSubmit: values => {
       if (values.email !== values.confirmEmail) {
-        Swal.fire('Email ile confirm Email eyni olmalıdır')
+        Swal.fire('The email must be the same as the confirmation email')
         return
       }
       else {
@@ -41,6 +44,7 @@ const Mainuser = () => {
           timer: 1500
         })
       }
+      
       formik.resetForm()
     },
 
@@ -146,8 +150,11 @@ const Mainuser = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.rating}
-            type='text' />
+            type='number' />
         </div>
+        {formik.touched.rating && formik.errors.rating ? (
+            <div style={{ color: "red" }}>{formik.errors.rating}</div>
+          ) : null}
         <div className="checkbox">
           <input type="checkbox" id="myCheckbox" name="myCheckbox" value="myValue" />
           <label htmlFor="myCheckbox">Send me your catalog</label>

@@ -7,11 +7,27 @@
         padding: 20px;
         background-color: rgb(247,247,247);
         border: 1px solid rgb(247,247,247);
+        display: flex;
+        justify-content: space-between;
         p{
             margin-left: 5px;
             color: black;
             font-weight: 500;
             font-family: sans-serif;
+            font-size: 32px;
+        }
+        .admin-btn{
+            width: 120px;
+            height: 35px;
+            background-color: rgba(165, 42, 42, 0.904);
+            color: white;
+            border-radius: 12px;
+            border: none;
+            transition: 1s;
+            &:hover{
+                cursor: pointer;
+                background-color:rgba(193, 36, 36, 0.806);
+            }
         }
     }
 

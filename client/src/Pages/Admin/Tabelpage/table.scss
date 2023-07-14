@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+
+    .add {
+        background-color: teal;
+        width: 120px;
+        height: 40px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-style: normal;
+        cursor: pointer;
+    }
+
+    .det-btn {
+        background-color: rgb(56, 194, 240);
+        border: none;
+        width: 40px;
+        height: 36px;
+        color: white;
+        border-radius: 5px;
+        transition: .5s;
+
+        &:hover {
+            cursor: pointer;
+            background-color: rgba(56, 194, 240, 0.797);
+        }
+    }
+
+    .go-add {
+        display: flex;
+        gap: 10px;
+
+        .go-back {
+            background-color: teal;
+            width: 120px;
+            height: 40px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
