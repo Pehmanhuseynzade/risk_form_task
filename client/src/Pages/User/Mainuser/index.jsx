@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useFormik } from 'formik';
-import Swal from "sweetalert2"
 import * as Yup from 'yup';
 import "../user.scss"
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios"
 const Mainuser = () => {
   const [required, setRequired] = useState('email')
+  const [info, setinfo] = useState([]);
+  const userinfos = async () => {
+    try {
+      const res = await axios.get("http://localhost:8989/api/form");
+      setinfo(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.error("Failed to retrieve Datas entries:", error);
+    }
+  };
+  useEffect(()=>{
+    userinfos();
+  },[])
   const formik = useFormik({
     initialValues: {
       firstName: '',
@@ -29,24 +42,29 @@ const Mainuser = () => {
         .typeError("Rating must be a number")
         .required("Required"),
           }),
-    onSubmit: values => {
-      if (values.email !== values.confirmEmail) {
-        Swal.fire('The email must be the same as the confirmation email')
-        return
-      }
-      else {
-        axios.post('http://localhost:8989/api/form', values)
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Sign up is successfully',
-          showConfirmButton: false,
-          timer: 1500
-        })
-      }
+          onSubmit: (values) => {
+            if (values.email !== values.confirmEmail) {
+              toast.error("Email and confirmEmail do not match", {
+                autoClose: 1000,
+              });
+              return;
+            }
       
-      formik.resetForm()
-    },
+            const existingEntry = info.find((entry) => entry.email === values.email);
+            if (existingEntry) {
+              toast.error("Email already exists", {
+                autoClose: 1000,
+              });
+              return;
+            } else {
+              axios.post("http://localhost:8989/api/form", values);
+              toast.success("Post is successfully!", {
+                autoClose: 1000,
+              });
+            }
+      
+            formik.resetForm();
+          },
 
   });
   return (
@@ -162,6 +180,7 @@ const Mainuser = () => {
 
         <button type="submit">Submit</button>
       </form>
+      <ToastContainer />
     </>
   );
 };

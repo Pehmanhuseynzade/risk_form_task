@@ -31,7 +31,6 @@ function DetailPage() {
           className="card-main"
           bordered={false}
           style={{ width: 390 , fontFamily: "Montserrat , sans-serif"}}
-          // confirmEmail
         >
           <div style={{display : "flex" , gap : 5}}>
           <label>FirstName : </label>

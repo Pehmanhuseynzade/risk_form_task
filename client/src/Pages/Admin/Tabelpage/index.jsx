@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { getAlldatas, deleteDatas, postDatas } from '../../../api/httpsrequests';
 import { Table, Button, Modal, Form, Input } from 'antd';
 import Swal from 'sweetalert2';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./table.scss"
-// import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet";
 
 function Tablepage() {
   const [info, setinfo] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editinginfo, setEditinginfo] = useState(null);
   const [form] = Form.useForm();
-  const navigate = useNavigate();
 
   const userinfos = async () => {
     try {
@@ -62,25 +61,25 @@ function Tablepage() {
         const editedconfirmEmail = Swal.getPopup().querySelector("#edit-confirmEmail").value;
         const editedphone = Swal.getPopup().querySelector("#edit-phone").value;
         const editedrating = Swal.getPopup().querySelector("#edit-rating").value;
-  
+
         if (!editedfirstName || !editedlastName || !editedemail || !editedconfirmEmail || !editedphone || !editedrating) {
           Swal.showValidationMessage("Please fill in all fields");
           return false;
         }
-  
+
         // Check if email and confirmEmail match
         if (editedemail !== editedconfirmEmail) {
           Swal.showValidationMessage("Email and confirmEmail do not match");
           return false;
         }
-  
+
         // Check for existing email entry
         const existingEntry = info.find((entry) => entry.email === editedemail);
         if (existingEntry) {
           Swal.showValidationMessage("Email already exists");
           return false;
         }
-  
+
         return {
           firstName: editedfirstName,
           lastName: editedlastName,
@@ -94,7 +93,7 @@ function Tablepage() {
       if (result.isConfirmed) {
         const editedData = result.value;
         console.log("Edited Data:", editedData);
-  
+
         try {
           await axios.put(`http://localhost:8989/api/form/${record._id}`, editedData);
         } catch (error) {
@@ -159,13 +158,13 @@ function Tablepage() {
       phone: values.phone,
       rating: values.rating,
     };
-    toast.success('Post is successfully!',{
-      autoClose : 2000
+    toast.success('Post is successfully!', {
+      autoClose: 2000
     });
     await postDatas(newInfo);
 
     handleCloseModal();
-   
+
     await userinfos();
 
   };
@@ -208,7 +207,7 @@ function Tablepage() {
       render: (text, record) => (
         <Link to={`details/${record._id}`}>
           <button
-          className='det-btn'
+            className='det-btn'
           >
             <i class="fa-solid fa-address-book"></i>
           </button>
@@ -221,7 +220,7 @@ function Tablepage() {
       key: "edit",
       render: (text, record) => (
         <Button
-        type="primary"
+          type="primary"
           onClick={() => {
             handleEditData(record)
           }}
@@ -243,72 +242,76 @@ function Tablepage() {
 
   return (
     <>
-      <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Admin Page</title>
+      </Helmet>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <div>
-        <div className='go-add' style={{ marginBottom: '16px',marginTop:"40px" }}>
+          <div className='go-add' style={{ marginBottom: '16px', marginTop: "40px" }}>
             <Link to='/'><button className='go-back'>Go back</button></Link>
-          <button className='add' onClick={() => handleOpenModal(null)}>
-            Add
-          </button>
-        </div>
-        <div style={{ width: '60%', }}>
-          <Table columns={columns} dataSource={info} />
+            <button className='add' onClick={() => handleOpenModal(null)}>
+              Add
+            </button>
+          </div>
+          <div style={{ width: '60%', }}>
+            <Table columns={columns} dataSource={info} />
 
-          <Modal
-            visible={modalOpen}
-            title={editinginfo ? 'Edit informations Entry' : 'Add New Informations'}
-            onCancel={handleCloseModal}
-            onOk={handleSubmit}
-          >
-            <Form form={form} layout="vertical">
-              <Form.Item
-                label="First Name"
-                name="firstName"
-                rules={[{ required: true }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Last Name"
-                name="lastName"
-                rules={[{ required: true }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Email"
-                name="email"
-                rules={[{ required: true }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Confirm Email"
-                name="confirmEmail"
-                rules={[{ required: true }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Phone Number"
-                name="phone"
-                rules={[{ required: true }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Rating"
-                name="rating"
-                rules={[{ required: true, message: 'Please enter' }]}
-              >
-                <Input />
-              </Form.Item>
-            </Form>
-          </Modal>
+            <Modal
+              visible={modalOpen}
+              title={editinginfo ? 'Edit informations Entry' : 'Add New Informations'}
+              onCancel={handleCloseModal}
+              onOk={handleSubmit}
+            >
+              <Form form={form} layout="vertical">
+                <Form.Item
+                  label="First Name"
+                  name="firstName"
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Last Name"
+                  name="lastName"
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Confirm Email"
+                  name="confirmEmail"
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Phone Number"
+                  name="phone"
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Rating"
+                  name="rating"
+                  rules={[{ required: true, message: 'Please enter' }]}
+                >
+                  <Input />
+                </Form.Item>
+              </Form>
+            </Modal>
+          </div>
         </div>
       </div>
-      </div>
-      <ToastContainer/>
+      <ToastContainer />
     </>
   )
 }
