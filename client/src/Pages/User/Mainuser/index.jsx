@@ -1,9 +1,10 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import "../user.scss"
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios"
+import { Helmet } from 'react-helmet';
 const Mainuser = () => {
   const [required, setRequired] = useState('email')
   const [info, setinfo] = useState([]);
@@ -16,9 +17,9 @@ const Mainuser = () => {
       console.error("Failed to retrieve Datas entries:", error);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     userinfos();
-  },[])
+  }, [])
   const formik = useFormik({
     initialValues: {
       firstName: '',
@@ -38,37 +39,41 @@ const Mainuser = () => {
         .required('Required'),
       email: Yup.string().email('Invalid email address').required('Required'),
       confirmEmail: Yup.string().email('Invalid email address').required('Required'),
-    rating: Yup.number()
+      rating: Yup.number()
         .typeError("Rating must be a number")
         .required("Required"),
-          }),
-          onSubmit: (values) => {
-            if (values.email !== values.confirmEmail) {
-              toast.error("Email and confirmEmail do not match", {
-                autoClose: 1000,
-              });
-              return;
-            }
-      
-            const existingEntry = info.find((entry) => entry.email === values.email);
-            if (existingEntry) {
-              toast.error("Email already exists", {
-                autoClose: 1000,
-              });
-              return;
-            } else {
-              axios.post("http://localhost:8989/api/form", values);
-              toast.success("Post is successfully!", {
-                autoClose: 1000,
-              });
-            }
-      
-            formik.resetForm();
-          },
+    }),
+    onSubmit: (values) => {
+      if (values.email !== values.confirmEmail) {
+        toast.error("Email and confirmEmail do not match", {
+          autoClose: 1000,
+        });
+        return;
+      }
+
+      const existingEntry = info.find((entry) => entry.email === values.email);
+      if (existingEntry) {
+        toast.error("Email already exists", {
+          autoClose: 1000,
+        });
+        return;
+      } else {
+        axios.post("http://localhost:8989/api/form", values);
+        toast.success("Post is successfully!", {
+          autoClose: 1000,
+        });
+      }
+
+      formik.resetForm();
+    },
 
   });
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>User Page</title>
+      </Helmet>
       <form onSubmit={formik.handleSubmit}>
         <div className='first-name'>
           <label htmlFor="firstName">First Name</label>
@@ -171,8 +176,8 @@ const Mainuser = () => {
             type='number' />
         </div>
         {formik.touched.rating && formik.errors.rating ? (
-            <div style={{ color: "red" }}>{formik.errors.rating}</div>
-          ) : null}
+          <div style={{ color: "red" }}>{formik.errors.rating}</div>
+        ) : null}
         <div className="checkbox">
           <input type="checkbox" id="myCheckbox" name="myCheckbox" value="myValue" />
           <label htmlFor="myCheckbox">Send me your catalog</label>
