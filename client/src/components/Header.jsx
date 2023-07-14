@@ -6,7 +6,7 @@ function Header() {
     <>
     <header>
         <p>Sign Up!</p>
-        <Link to='/admin'><button className='admin-btn'>Admin Page</button></Link>
+        <Link to='/admin'><button className='admin-btn'>Admin button</button></Link>
     </header>
     </>
   )
